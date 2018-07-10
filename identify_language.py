@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 import nltk
 from nltk.corpus import europarl_raw
 from sklearn.feature_extraction.text import TfidfTransformer,CountVectorizer
-from scikits.learn.feature_extraction.text import CharNGramAnalyzer
 from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
