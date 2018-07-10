@@ -3,8 +3,8 @@
 from sklearn.model_selection import train_test_split
 import nltk
 from nltk.corpus import europarl_raw
-from sklearn.feature_extraction.text import TfidfTransformer
-from scikits.learn.feature_extraction.text import CharNGramAnalyzer,CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer,CountVectorizer
+from scikits.learn.feature_extraction.text import CharNGramAnalyzer
 from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
@@ -12,14 +12,6 @@ from sklearn.metrics import accuracy_score
 
 nltk.download('europarl_raw')
 
-# Convert to lower case
-class LowerCasePreprocessor(object):
-
-    def preprocess(self, unicode_content):
-        return unicode_content.lower()
-
-    def __repr__(self):
-        return "LowerCasePreprocessor()"
 
 def clean_tokens(tokens):
     return [token.lower() for token in tokens if token.isalpha()]
@@ -47,16 +39,8 @@ print "size of train data",len(x_train)
 print "size of test data",len(x_test)
 
 
-# Analyzer that splits strings into sequence of 1 to 3 characters
-analyzer = CharNGramAnalyzer(
-    min_n=1,
-    max_n=3,
-    preprocessor=LowerCasePreprocessor(),
-)
-
-
 classifier = Pipeline([
-    ('vec', CountVectorizer(analyzer=analyzer)),
+    ('vec', CountVectorizer(analyzer='char',ngram_range=(3, 3))),
     ('tfidf', TfidfTransformer(use_idf=False)),
     #('clf', LogisticRegression()),
     ('clf', LinearSVC()),
